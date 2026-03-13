@@ -1,19 +1,37 @@
+from flask import Flask, render_template, request
 from logic import validar_argumento
 
-print("--- PROYECTO: VALIDADOR DE ARGUMENTOS ---")
+app = Flask(__name__)
 
-p = ["a || (b && c)"] 
-c = "(a || b) && (a || c)"                  
+@app.route('/', methods=['GET', 'POST'])
+def index():
+    resultado = None
+    if request.method == 'POST':
+        
+        premisas_raw = request.form.get('premisas', '')
+        conclusion = request.form.get('conclusion', '')
+        
+        
+        lista_premisas = [p.strip() for p in premisas_raw.split('\n') if p.strip()]
+        
+       
+        valido, tabla, variables, criticos = validar_argumento(lista_premisas, conclusion)
+        
+        
+        if valido == "Error de sintaxis":
+            resultado = {"error": "Hubo un error en la sintaxis de tus fórmulas. Revisa los operadores."}
+        else:
+            
+            resultado = {
+                'valido': valido,
+                'tabla': tabla,
+                'variables': variables,
+                'premisas_nombres': lista_premisas,
+                'conclusion_nombre': conclusion
+            }
 
-valido, tabla, vars_nombres, criticos = validar_argumento(p, c)
+    
+    return render_template('index.html', resultado=resultado, all=all)
 
-if valido == "Error de sintaxis":
-    print("Hubo un error en las fórmulas introducidas.") 
-else:
-    print(f"Variables: {vars_nombres}")
-    print(f"Resultado: {'VÁLIDO' if valido else 'INVÁLIDO'}") 
-    print(f"Se encontraron {len(criticos)} renglones críticos.")
-
-    print("\nTabla de verdad completa:")
-    for fila in tabla:
-        print(fila)
+if __name__ == '__main__':
+    app.run(debug=True)

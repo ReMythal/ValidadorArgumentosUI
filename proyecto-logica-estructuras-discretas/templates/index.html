@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Validador de Argumentos de Lógica Proposicional </title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Validador de Argumentos Lógicos</h1>
+        <p class="centered">Ingresa tus premisas (una por renglón) y la conclusión para determinar la validez del argumento.</p>
+        <p class="centered">Utilice la siguiente simbologia:</p>
+        <div class="operators-grid">
+            <div class="op-item"><code>&&</code> : Conjunción</div>
+            <div class="op-item"><code>||</code> : Disyunción</div>
+            <div class="op-item"><code>-></code> : Condicional</div>
+            <div class="op-item"><code><-></code> : Bicondicional</div>
+            <div class="op-item"><code>!</code> : Negación</div>
+        </div>
+        
+        <form method="POST">
+            <div class="form-group">
+                <label for="premisas"><strong>Premisas:</strong></label>
+                <textarea name="premisas" id="premisas" rows="5" placeholder="Ejemplo:&#10;p && q&#10;p -> r"></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="conclusion"><strong>Conclusión:</strong></label>
+                <input type="text" name="conclusion" id="conclusion" placeholder="Ejemplo: r">
+            </div>
+            
+            <button type="submit">Validar Argumento</button>
+        </form> 
+        {% if resultado %}
+            <hr>
+            <div class="result {{ 'valido' if resultado.valido else 'invalido' }}">
+                <h2>Resultado: {{ 'EL ARGUMENTO ES VÁLIDO' if resultado.valido else 'EL ARGUMENTO ES INVÁLIDO' }}</h2>
+            </div>
+
+            <h3>Tabla de Verdad Completa</h3>
+            <p><small>* Los renglones resaltados en amarillo son los <strong>casos críticos</strong> (donde todas las premisas son verdaderas).</small></p>
+            
+            <table>
+                <thead>
+                    <tr>
+                        {% for var in resultado.variables %}
+                            <th>{{ var }}</th>
+                        {% endfor %}
+                        
+                        <th>Premisas (Valores)</th>
+                        
+                        <th>Conclusión</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for fila in resultado.tabla %}
+                        {# Un renglón es crítico si ALL los valores en fila.premisas son True #}
+                        <tr class="{{ 'critico' if all(fila.premisas) }}">
+                            
+                            {% for var in resultado.variables %}
+                                <td>{{ 'V' if fila[var] else 'F' }}</td>
+                            {% endfor %}
+                            
+                            <td>
+                                [{% for v_premisa in fila.premisas %}
+                                    {{ 'V' if v_premisa else 'F' }}{{ "," if not loop.last }}
+                                {% endfor %}]
+                            </td>
+                            
+                            <td><strong>{{ 'V' if fila.conclusion else 'F' }}</strong></td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+    </div>
+</body>
+</html>
