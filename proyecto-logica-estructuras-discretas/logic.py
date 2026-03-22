@@ -40,11 +40,17 @@ def validar_argumento(premisas, conclusion):
             valores_premisas = [eval(limpiar_y_traducir(p), {"__builtins__": None}, contexto_valores) for p in premisas]
             valor_conclusion = eval(limpiar_y_traducir(conclusion), {"__builtins__": None}, contexto_valores)
             
-            fila = {**contexto_valores, "premisas": valores_premisas, "conclusion": valor_conclusion}
+            es_critico = all(valores_premisas)
+            fila = {
+                **contexto_valores,
+                "premisas": valores_premisas,
+                "conclusion": valor_conclusion,
+                "critico": es_critico
+            }
             tabla_completa.append(fila)
 
             # Identifica renglones críticos 
-            if all(valores_premisas):
+            if es_critico:
                 renglones_criticos.append(fila)
                 
                 if not valor_conclusion:
