@@ -313,20 +313,6 @@
               <span class="text-red-400 mt-0.5 shrink-0">✗</span>
               <span>
                 <strong class="text-slate-600"
-                  >Bicondicional
-                  <code
-                    class="px-1 py-0.5 bg-slate-100 rounded text-[0.65rem] font-mono"
-                  >
-                    &lt;-&gt;
-                  </code></strong
-                >
-                — No está soportado, causará error de sintaxis.
-              </span>
-            </div>
-            <div class="flex items-start gap-2">
-              <span class="text-red-400 mt-0.5 shrink-0">✗</span>
-              <span>
-                <strong class="text-slate-600"
                   >Condicional
                   <code
                     class="px-1 py-0.5 bg-slate-100 rounded text-[0.65rem] font-mono"
@@ -346,6 +332,32 @@
                   class="px-1 py-0.5 bg-emerald-50 text-emerald-600 rounded text-[0.65rem] font-mono"
                 >
                   p -&gt; r
+                </code>
+              </span>
+            </div>
+            <div class="flex items-start gap-2">
+              <span class="text-red-400 mt-0.5 shrink-0">✗</span>
+              <span>
+                <strong class="text-slate-600"
+                  >Bicondicional
+                  <code
+                    class="px-1 py-0.5 bg-slate-100 rounded text-[0.65rem] font-mono"
+                  >
+                    &lt;-&gt;
+                  </code>
+                  con expresiones complejas</strong
+                >
+                — Solo funciona entre variables simples.
+                <code
+                  class="px-1 py-0.5 bg-red-50 text-red-600 rounded text-[0.65rem] font-mono"
+                >
+                  (p && q) &lt;-&gt; r
+                </code>
+                no funciona, usa
+                <code
+                  class="px-1 py-0.5 bg-emerald-50 text-emerald-600 rounded text-[0.65rem] font-mono"
+                >
+                  p &lt;-&gt; r
                 </code>
               </span>
             </div>
@@ -382,7 +394,7 @@
               <span class="text-red-400 mt-0.5 shrink-0">✗</span>
               <span>
                 <strong class="text-slate-600"
-                  >Implicaciones encadenadas</strong
+                  >Implicaciones / dobles implicaciones encadenadas o mezcladas</strong
                 >
                 —
                 <code
@@ -390,7 +402,19 @@
                 >
                   p -&gt; q -&gt; r
                 </code>
-                no funciona. Sepáralas en premisas individuales.
+                ,
+                <code
+                  class="px-1 py-0.5 bg-red-50 text-red-600 rounded text-[0.65rem] font-mono"
+                >
+                  p &lt;-&gt; q &lt;-&gt; r
+                </code>
+                o
+                <code
+                  class="px-1 py-0.5 bg-red-50 text-red-600 rounded text-[0.65rem] font-mono"
+                >
+                  p -&gt; q &lt;-&gt; r
+                </code>
+                no funcionan. Sepáralas en premisas individuales.
               </span>
             </div>
             <div class="flex items-start gap-2">
@@ -437,6 +461,11 @@
                 class="px-2 py-1 bg-white rounded-lg text-[0.65rem] font-mono text-emerald-700 border border-emerald-200"
               >
                 p -&gt; q
+              </code>
+              <code
+                class="px-2 py-1 bg-white rounded-lg text-[0.65rem] font-mono text-emerald-700 border border-emerald-200"
+              >
+                p &lt;-&gt; q
               </code>
               <code
                 class="px-2 py-1 bg-white rounded-lg text-[0.65rem] font-mono text-emerald-700 border border-emerald-200"
