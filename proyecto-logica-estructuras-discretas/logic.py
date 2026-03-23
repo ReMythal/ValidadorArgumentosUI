@@ -58,3 +58,4 @@ def validar_argumento(premisas, conclusion):
             return "Error de sintaxis", [], [], []
 
     return es_valido, tabla_completa, variables, renglones_criticos
+    
