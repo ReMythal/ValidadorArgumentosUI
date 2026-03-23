@@ -15,9 +15,14 @@ def generar_combinaciones(n): # Genera la tabla de verdad inicial de acuerdo a l
 
 def limpiar_y_traducir(prop): # Limpia espacios y traduce la sinttaxis para ser interpretada por eval
     prop = prop.strip().lower()
-    if "->" in prop:
-        prop = re.sub(r'(\w+)\s*(?:->|→)\s*(\w+)', r'(not \1 or \2)', prop)
+    if "<->" in prop or "↔" in prop:
+        prop = re.sub(r'(.*?)\s*(?:<->|↔)\s*(.*)', r'((not \1 or \2) and (not \2 or \1))', prop)
+        
+    if "->" in prop or "→" in prop:
+        prop = re.sub(r'(.*?)\s*(?:->|→)\s*(.*)', r'(not \1 or \2)', prop)
+    
     prop_py = prop.replace("&&", " and ").replace("||", " or ").replace("!", " not ")
+    
     return prop_py
 
 def obtener_variables(formulas): # Obtiene todas las proposiones primitivas
